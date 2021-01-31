@@ -1,8 +1,4 @@
-import turtle
-import os
-import math
-import random
-import platform
+import turtle, os, math, random, platform
 
 wn = turtle.Screen()
 wn.bgcolor('black')
@@ -30,5 +26,4 @@ player.speed(0)
 player.setposition(0, -250)
 player.setheading(90)
 
-
-delay = input("Press enter to finish")
+input("Press Enter to continue...")
