@@ -26,4 +26,28 @@ player.speed(0)
 player.setposition(0, -250)
 player.setheading(90)
 
+# Player speed
+playerspeed = 15
+
+def move_left():
+    x = player.xcor()
+    x -= playerspeed
+    if x < -260:
+        x = -280
+    player.setx(x)
+
+def move_right():
+    x = player.xcor()
+    x += playerspeed
+    if x > 260:
+        x = 280
+    player.setx(x)
+
+
+# Keyboard bindings
+turtle.listen()
+turtle.onkey(move_left, "Left")
+turtle.onkey(move_right, "Right")
+
+
 input("Press Enter to continue...")
