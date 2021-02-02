@@ -39,6 +39,7 @@ enemies = []
 for i in range(num_of_enemies):
     enemies.append(turtle.Turtle())
 
+# Make multiple enemies
 for enemy in enemies:
     enemy.color('red')
     enemy.shape('circle')
@@ -115,15 +116,19 @@ while True:
 
         # Move enemy back and down
         if enemy.xcor() > 280:
+            for e in enemies:
+                y = e.ycor()
+                y -= 20
+                e.sety(y)
             enemy_speed *= -1
-            y = enemy.ycor()
-            y -= 20
-            enemy.sety(y)
+
         if enemy.xcor() < -280:
+            for e in enemies:
+                y = e.ycor()
+                y -= 20
+                e.sety(y)
             enemy_speed *= -1
-            y = enemy.ycor()
-            y -= 20
-            enemy.sety(y)
+
 
         # Check for collision between bullet and enemy
         if is_collision(bullet, enemy):
