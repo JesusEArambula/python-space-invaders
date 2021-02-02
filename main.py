@@ -2,7 +2,12 @@ import turtle, os, math, random, platform
 
 wn = turtle.Screen()
 wn.bgcolor('black')
-wn.title("Space Invaders")
+wn.title('Space Invaders')
+wn.bgpic('space_invaders_background.gif')
+
+# Register shapes
+turtle.register_shape('spaceship.gif')
+turtle.register_shape('invader.gif')
 
 # Border Turtle
 border_pen = turtle.Turtle()
@@ -34,7 +39,7 @@ score_pen.hideturtle()
 # Player Turtle
 player = turtle.Turtle()
 player.color('blue')
-player.shape('triangle')
+player.shape('spaceship.gif')
 player.penup()
 player.speed(0)
 player.setposition(0, -250)
@@ -55,7 +60,7 @@ for i in range(num_of_enemies):
 # Make multiple enemies
 for enemy in enemies:
     enemy.color('red')
-    enemy.shape('circle')
+    enemy.shape('invader.gif')
     enemy.penup()
     enemy.speed(0)
     x = random.randint(-200, 200)
@@ -106,7 +111,7 @@ def fire_bullet():
         bullet.showturtle()
 def is_collision(obj1, obj2):
     distance = math.sqrt(math.pow(obj1.xcor() - obj2.xcor(), 2) + math.pow(obj1.ycor() - obj2.ycor(), 2))
-    if distance < 15:
+    if distance < 25:
         return True
     else:
         return False
