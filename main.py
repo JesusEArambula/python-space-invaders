@@ -9,8 +9,8 @@ wn.title('Space Invaders')
 wn.bgpic('space_invaders_background.gif')
 
 # Register shapes
-turtle.register_shape('spaceship.gif')
-turtle.register_shape('invader.gif')
+wn.register_shape('spaceship.gif')
+wn.register_shape('invader.gif')
 
 # Border Turtle
 border_pen = turtle.Turtle()
@@ -34,7 +34,7 @@ score_pen.speed(0)
 score_pen.color('white')
 score_pen.penup()
 score_pen.setposition(-290, 280)
-score_string = 'Score: %s' %score
+score_string = 'Score: {}'.format(score)
 score_pen.write(score_string, False, align='left', font=('Arial', 10, 'normal'))
 score_pen.hideturtle()
 
@@ -47,9 +47,7 @@ player.penup()
 player.speed(0)
 player.setposition(0, -250)
 player.setheading(90)
-
-# Player speed
-player_speed = 15
+player.speed = 0
 
 # Number of enemies
 num_of_enemies = 5
@@ -92,17 +90,20 @@ bullet_state = 'ready'
 
 # Move left and right
 def move_left():
+    player.speed = -15
+
+def move_right():
+    player.speed = 15
+
+def move_player():
     x = player.xcor()
-    x -= player_speed
+    x += player.speed
     if x < -280:
         x = -280
-    player.setx(x)
-def move_right():
-    x = player.xcor()
-    x += player_speed
     if x > 280:
         x = 280
     player.setx(x)
+
 def fire_bullet():
     global bullet_state
     if bullet_state == 'ready':
@@ -112,6 +113,7 @@ def fire_bullet():
         x = player.xcor()
         bullet .setposition(x, y)
         bullet.showturtle()
+
 def is_collision(obj1, obj2):
     distance = math.sqrt(math.pow(obj1.xcor() - obj2.xcor(), 2) + math.pow(obj1.ycor() - obj2.ycor(), 2))
     if distance < 25:
@@ -121,13 +123,15 @@ def is_collision(obj1, obj2):
 
 
 # Keyboard bindings
-turtle.listen()
-turtle.onkey(move_left, "Left")
-turtle.onkey(move_right, "Right")
-turtle.onkey(fire_bullet, "space")
+wn.listen()
+wn.onkeypress(move_left, "Left")
+wn.onkeypress(move_right, "Right")
+wn.onkeypress(fire_bullet, "space")
 
 # Main Game Loop
 while True:
+
+    move_player()
 
     for enemy in enemies:
         # Move enemy
@@ -163,9 +167,9 @@ while True:
             enemy.setposition(x, y)
             # Update score
             score += 10
-            score_string = 'Score: %s' %score
+            score_string = 'Score: {}'.format(score)
             score_pen.clear()
-            score_pen.write(score_string, False, align='left', font=('Arial', 14, 'normal'))
+            score_pen.write(score_string, False, align='left', font=('Arial', 10, 'normal'))
 
         # Check for collision between player and enemy
         if is_collision(player, enemy):
