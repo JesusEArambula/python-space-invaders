@@ -1,4 +1,7 @@
-import turtle, os, math, random, platform
+import math
+import random
+import turtle
+import playsound
 
 wn = turtle.Screen()
 wn.bgcolor('black')
@@ -31,8 +34,8 @@ score_pen.speed(0)
 score_pen.color('white')
 score_pen.penup()
 score_pen.setposition(-290, 280)
-score_string = "Score: %s" %score
-score_pen.write(score_string, False, align='left', font=('Arial',14, 'normal'))
+score_string = 'Score: %s' %score
+score_pen.write(score_string, False, align='left', font=('Arial', 10, 'normal'))
 score_pen.hideturtle()
 
 
@@ -85,7 +88,7 @@ bullet_speed = 20
 # Define state of bullet
 # ready - ready to fire
 # fire - bullet is firing
-bullet_state = "ready"
+bullet_state = 'ready'
 
 # Move left and right
 def move_left():
@@ -102,8 +105,8 @@ def move_right():
     player.setx(x)
 def fire_bullet():
     global bullet_state
-    if bullet_state == "ready":
-        bullet_state = "fire"
+    if bullet_state == 'ready':
+        bullet_state = 'fire'
         # Move bullet above player
         y = player.ycor() + 10
         x = player.xcor()
@@ -152,7 +155,7 @@ while True:
         if is_collision(bullet, enemy):
             # Reset bullet
             bullet.hideturtle()
-            bullet_state = "ready"
+            bullet_state = 'ready'
             bullet.setposition(0, -400)
             # Reset enemy
             x = random.randint(-200, 200)
@@ -168,12 +171,12 @@ while True:
         if is_collision(player, enemy):
             player.hideturtle()
             enemy.hideturtle()
-            print("Game Over")
+            print('Game Over')
             break
 
 
     # Move bullet
-    if bullet_state == "fire":
+    if bullet_state == 'fire':
         y = bullet.ycor()
         y += bullet_speed
         bullet.sety(y)
@@ -181,5 +184,5 @@ while True:
     # Check to see if bullet has gone to the top
     if bullet.ycor() > 275:
         bullet.hideturtle()
-        bullet_state = "ready"
+        bullet_state = 'ready'
 
