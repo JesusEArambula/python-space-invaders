@@ -11,6 +11,7 @@ wn.bgpic('space_invaders_background.gif')
 # Register shapes
 wn.register_shape('spaceship.gif')
 wn.register_shape('invader.gif')
+wn.register_shape('bullet.gif')
 
 # Border Turtle
 border_pen = turtle.Turtle()
@@ -41,7 +42,6 @@ score_pen.hideturtle()
 
 # Player Turtle
 player = turtle.Turtle()
-player.color('blue')
 player.shape('spaceship.gif')
 player.penup()
 player.speed(0)
@@ -60,7 +60,6 @@ for i in range(num_of_enemies):
 
 # Make multiple enemies
 for enemy in enemies:
-    enemy.color('red')
     enemy.shape('invader.gif')
     enemy.penup()
     enemy.speed(0)
@@ -73,15 +72,14 @@ enemy_speed = 2
 
 # Create player's bullet
 bullet = turtle.Turtle()
-bullet.color('yellow')
-bullet.shape('triangle')
+bullet.shape('bullet.gif')
 bullet.penup()
 bullet.speed(0)
 bullet.setheading(90)
 bullet.shapesize(.5, .5)
 bullet.hideturtle()
 
-bullet_speed = 20
+bullet_speed = 40
 
 # Define state of bullet
 # ready - ready to fire
