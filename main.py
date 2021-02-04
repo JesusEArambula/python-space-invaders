@@ -2,7 +2,6 @@
 # the speeds of the enemy, player, and bullet
 # will vary with different machines
 
-
 import math
 import turtle
 import playsound
@@ -16,6 +15,9 @@ wn.tracer(0)
 # Register shapes
 wn.register_shape('spaceship.gif')
 wn.register_shape('invader.gif')
+wn.register_shape('invader2.gif')
+wn.register_shape('invader3.gif')
+wn.register_shape('invader4.gif')
 wn.register_shape('bullet.gif')
 
 # Border Turtle
@@ -66,9 +68,20 @@ enemy_start_x = -225
 enemy_start_y = 250
 enemy_number = 0
 
+enemy_list_position = 0
 # Make multiple enemies
 for enemy in enemies:
-    enemy.shape('invader.gif')
+    # Checks which row it is on 
+    # then draws the appropriate sprite
+    # in that row
+    if enemy_list_position < 10:
+        enemy.shape('invader.gif')
+    elif enemy_list_position >= 10 and enemy_list_position < 20:
+        enemy.shape('invader2.gif')
+    elif enemy_list_position >= 20 and enemy_list_position < 30:
+        enemy.shape('invader3.gif')
+    else:
+        enemy.shape('invader4.gif')
     enemy.penup()
     enemy.speed(0)
     x = enemy_start_x + (50 * enemy_number)
@@ -79,6 +92,9 @@ for enemy in enemies:
     if enemy_number == 10:
         enemy_start_y -= 50
         enemy_number = 0
+    # Update which invader sprite
+    # it should display
+    enemy_list_position += 1
 
 enemy_speed = 0.1
 
