@@ -57,6 +57,7 @@ player.speed = 0
 
 # Number of enemies
 num_of_enemies = 40
+enemies_left = num_of_enemies
 # Enemy list
 enemies = []
 
@@ -75,13 +76,13 @@ for enemy in enemies:
     # then draws the appropriate sprite
     # in that row
     if enemy_list_position < 10:
-        enemy.shape('invader.gif')
-    elif enemy_list_position >= 10 and enemy_list_position < 20:
-        enemy.shape('invader2.gif')
-    elif enemy_list_position >= 20 and enemy_list_position < 30:
-        enemy.shape('invader3.gif')
-    else:
         enemy.shape('invader4.gif')
+    elif enemy_list_position >= 10 and enemy_list_position < 20:
+        enemy.shape('invader3.gif')
+    elif enemy_list_position >= 20 and enemy_list_position < 30:
+        enemy.shape('invader2.gif')
+    else:
+        enemy.shape('invader.gif')
     enemy.penup()
     enemy.speed(0)
     x = enemy_start_x + (50 * enemy_number)
@@ -158,8 +159,9 @@ wn.onkeypress(move_left, "Left")
 wn.onkeypress(move_right, "Right")
 wn.onkeypress(player_fire_bullet, "space")
 
+running = True
 # Main Game Loop
-while True:
+while running:
     wn.update()
     move_player()
 
@@ -188,6 +190,16 @@ while True:
 
         # Check for collision between bullet and enemy
         if is_collision(bullet, enemy):
+            # Decreases amount of enemies,
+            # checks how many enemies are left,
+            # and increase enemy speed
+            enemies_left -= 1
+            if enemies_left == 30:
+                enemy_speed *= 2
+            if enemies_left == 20:
+                enemy_speed *= 1.5
+            if enemies_left == 10:
+                enemy_speed *= 1.5
             # insert laser sound here
             # Reset bullet
             bullet.hideturtle()
@@ -200,6 +212,8 @@ while True:
             score_string = 'Score: {}'.format(score)
             score_pen.clear()
             score_pen.write(score_string, False, align='left', font=('Arial', 10, 'normal'))
+            
+
 
         # Check for collision between player and enemy
         if is_collision(player, enemy):
@@ -207,7 +221,9 @@ while True:
             player.hideturtle()
             enemy.hideturtle()
             print('Game Over')
+            running = False
             break
+
 
 
     # Move bullet
