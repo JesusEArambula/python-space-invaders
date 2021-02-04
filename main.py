@@ -1,5 +1,9 @@
+# Please Note:
+# the speeds of the enemy, player, and bullet
+# will vary with different machines
+
+
 import math
-import random
 import turtle
 import playsound
 
@@ -7,6 +11,7 @@ wn = turtle.Screen()
 wn.bgcolor('black')
 wn.title('Space Invaders')
 wn.bgpic('space_invaders_background.gif')
+wn.tracer(0)
 
 # Register shapes
 wn.register_shape('spaceship.gif')
@@ -29,7 +34,6 @@ border_pen.hideturtle()
 
 # Set score
 score = 0
-
 score_pen = turtle.Turtle()
 score_pen.speed(0)
 score_pen.color('white')
@@ -50,24 +54,33 @@ player.setheading(90)
 player.speed = 0
 
 # Number of enemies
-num_of_enemies = 5
-# List of enemies
+num_of_enemies = 40
+# Enemy list
 enemies = []
 
 # Add enemies to list
 for i in range(num_of_enemies):
     enemies.append(turtle.Turtle())
 
+enemy_start_x = -225
+enemy_start_y = 250
+enemy_number = 0
+
 # Make multiple enemies
 for enemy in enemies:
     enemy.shape('invader.gif')
     enemy.penup()
     enemy.speed(0)
-    x = random.randint(-200, 200)
-    y = random.randint(100, 250)
+    x = enemy_start_x + (50 * enemy_number)
+    y = enemy_start_y
     enemy.setposition(x, y)
+    # Update enemy number
+    enemy_number += 1
+    if enemy_number == 10:
+        enemy_start_y -= 50
+        enemy_number = 0
 
-enemy_speed = 2
+enemy_speed = 0.1
 
 
 # Create player's bullet
@@ -79,7 +92,7 @@ bullet.setheading(90)
 bullet.shapesize(.5, .5)
 bullet.hideturtle()
 
-bullet_speed = 40
+bullet_speed = 7
 
 # Define state of bullet
 # ready - ready to fire
@@ -88,10 +101,10 @@ bullet_state = 'ready'
 
 # Move left and right
 def move_left():
-    player.speed = -15
+    player.speed = -1
 
 def move_right():
-    player.speed = 15
+    player.speed = 1
 
 def move_player():
     x = player.xcor()
@@ -102,7 +115,8 @@ def move_player():
         x = 280
     player.setx(x)
 
-def fire_bullet():
+# Player bullet fire function
+def player_fire_bullet():
     global bullet_state
     if bullet_state == 'ready':
         bullet_state = 'fire'
@@ -112,6 +126,8 @@ def fire_bullet():
         bullet .setposition(x, y)
         bullet.showturtle()
 
+# Checks if there is collision
+# between two objects
 def is_collision(obj1, obj2):
     distance = math.sqrt(math.pow(obj1.xcor() - obj2.xcor(), 2) + math.pow(obj1.ycor() - obj2.ycor(), 2))
     if distance < 25:
@@ -124,11 +140,11 @@ def is_collision(obj1, obj2):
 wn.listen()
 wn.onkeypress(move_left, "Left")
 wn.onkeypress(move_right, "Right")
-wn.onkeypress(fire_bullet, "space")
+wn.onkeypress(player_fire_bullet, "space")
 
 # Main Game Loop
 while True:
-
+    wn.update()
     move_player()
 
     for enemy in enemies:
@@ -137,7 +153,8 @@ while True:
         x += enemy_speed
         enemy.setx(x)
 
-        # Move enemy back and down
+        # Move enemy left and right
+        # and down
         if enemy.xcor() > 280:
             for e in enemies:
                 y = e.ycor()
@@ -155,14 +172,13 @@ while True:
 
         # Check for collision between bullet and enemy
         if is_collision(bullet, enemy):
+            # insert laser sound here
             # Reset bullet
             bullet.hideturtle()
             bullet_state = 'ready'
             bullet.setposition(0, -400)
             # Reset enemy
-            x = random.randint(-200, 200)
-            y = random.randint(100, 250)
-            enemy.setposition(x, y)
+            enemy.setposition(0, 10000)
             # Update score
             score += 10
             score_string = 'Score: {}'.format(score)
@@ -171,6 +187,7 @@ while True:
 
         # Check for collision between player and enemy
         if is_collision(player, enemy):
+            # insert explosion sound here
             player.hideturtle()
             enemy.hideturtle()
             print('Game Over')
